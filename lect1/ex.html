@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+  <title>Introduction to Ruby</title>
+  <link rel="shortcut icon" href="../img/kokenLogo.ico">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@ueckoken">
+  <meta property="og:url" content="https://www.koken.club.uec.ac.jp/chofusai2021/">
+  <meta property="og:title" content="Koken Ruby">
+  <meta property="og:description" content="Rubyの入門サイト">
+  <!-- <meta property="og:image" content="https://www.koken.club.uec.ac.jp/shinkan2022/fig/thumnail.jpg"> -->
+</head>
+<script src="https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@latest/dist/browser.umd.js"></script>
+<script type="text/javascript">
+  // Fetch and instntiate WebAssembly binary
+  var module;
+
+  async function main() {
+    const response = await fetch(
+      "https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@0.2.0-2022-04-05-a/dist/ruby.wasm"
+    );
+    const buffer = await response.arrayBuffer();
+    window.module = await WebAssembly.compile(buffer);
+    console.log("OK")
+  }
+
+  async function instantiateVM() {
+    const {
+      RubyVM,
+      WASI,
+      WasmFs
+    } = window["ruby-wasm-wasi"];
+    const wasmFs = new $WasmFs();
+    const originalWriteSync = wasmFs.fs.writeSync.bind(wasmFs.fs);
+    const textDecoder = new TextDecoder("utf-8");
+    wasmFs.fs.writeSync = (fd, buffer, offset, length, position) => {
+      const text = textDecoder.decode(buffer);
+      if (fd == 1 || fd == 2) {
+        console.log("");
+      }
+      return originalWriteSync(fd, buffer, offset, length, position);
+    };
+    const vm = new $RubyVM();
+    const wasi = new $WASI({
+      bindings: {
+        ...$WASI.defaultBindings,
+        fs: wasmFs.fs
+      },
+    });
+    const imports = {
+      wasi_snapshot_preview1: wasi.wasiImport
+    };
+    vm.addToImports(imports);
+    const wasmInstance = await WebAssembly.instantiate(await# {
+      wasm_module
+    }, imports);
+    await vm.setInstance(wasmInstance);
+    wasi.setMemory(wasmInstance.exports.memory);
+    vm.initialize();
+    return vm;
+  }
+
+  function run() {
+    instantiateVM()
+      .then((vm) => {
+        vm.eval('puts "Hello"').toString()
+      })
+      .catch((err) => {
+        console.log(error)
+      })
+  }
+  main();
+</script>
+
+<body>
+  <label for="input">Input</label><br>
+  <textarea id="input" name="input" rows="5" cols="33">
+    def add(a,b)
+      a+b
+    end
+  </textarea><br>
+  <label for="output">Output</label><br>
+  <textarea id="output" name="output" rows="5" cols="33">
+  </textarea>
+  <button onclick="run()">Run Code</button>
+</body>
+
+</html>
