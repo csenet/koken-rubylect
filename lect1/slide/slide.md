@@ -166,7 +166,7 @@ Rubyを既に習った方や上級者向けに D〜F問題もありまので挑�
 ## Rubyとは？
 
 - オブジェクト指向プログラミング言語
-- まつもとひろゆき(Matz)により開発
+- まつもとゆきひろ(Matz)により開発
 - 長年言語仕様が明文化されておらず、\
   MRI(CRuby)、JRuby、mrubyなど様々な実装がある
 - Ruby on Rails, Gosu, DXRuby, GR-Citrusなど\

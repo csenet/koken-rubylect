@@ -43,8 +43,9 @@ const isCorrect = async (input, output, func, source, question) => {
   const result = window.vm.eval(source + "\n" + `${func}(${input})`).toString();
   if (question == '1a' || question == '1d') {
     /* 小数点誤差を許容する */
-    const floatResult = parseFloat(input)
+    const floatResult = parseFloat(result)
     output = parseFloat(output)
+    console.log(floatResult, output);
     if (Math.abs(floatResult - output) <= 0.003) {
       return true;
     } else {
