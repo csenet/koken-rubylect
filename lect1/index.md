@@ -314,8 +314,6 @@ puts(add(1,3))
 
 ![bg 100% left](./slide/fig/checker.png)
 
-
-
 ## 演習問題1a
 
 半径がrで高さはhの円錐の体積を求める関数vcornを作成せよ
