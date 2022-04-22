@@ -24,9 +24,9 @@
 
 ## 講義資料とチェッカー
 
-講習サイト：(https://rubylect.k1h.dev/lect1)[https://rubylect.k1h.dev/lect1]
+講習サイト：[https://rubylect.k1h.dev/lect1](https://rubylect.k1h.dev/lect1)
 
-チェッカー：(https://rubylect.k1h.dev/chcker)[https://rubylect.k1h.dev/chcker]
+チェッカー：[https://rubylect.k1h.dev/chcker](https://rubylect.k1h.dev/chcker)
 
 ## 演習問題について
 
@@ -79,7 +79,7 @@ Rubyを既に習った方や上級者向けに D〜F問題もありまので挑�
 
 Cの場合やまだ出来ていない場合は
 
-(https://mame.github.io/emruby/irb/)[https://mame.github.io/emruby/irb/]
+[https://mame.github.io/emruby/irb/](https://mame.github.io/emruby/irb/)
 
 などでやってみる
 
