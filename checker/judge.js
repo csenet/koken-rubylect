@@ -71,16 +71,16 @@ const run = async () => {
     const result = await isCorrect(testCase.input, testCase.output, func, source);
     if (result === true) {
       acceptedCount++;
-      outputField.value += `AC:${testCase.input} => ${testCase.output}\n`;
+      outputField.value += `OK:${testCase.input} => ${testCase.output}\n`;
     } else {
       acceptedAll = false;
       outputField.value += `NC:${testCase.input} => ${result}\n`;
     }
   })
   if (acceptedAll) {
-    outputField.value += `All Check has Passed!! : ${acceptedCount}/${testCases.length}`;
+    outputField.value += `AC!! : ${acceptedCount}/${testCases.length}`;
   } else {
-    outputField.value += `Some wrong cases... : ${acceptedCount}/${testCases.length}`;
+    outputField.value += `NC Try Again! : ${acceptedCount}/${testCases.length}`;
   }
 }
 
