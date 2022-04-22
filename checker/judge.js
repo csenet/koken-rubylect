@@ -46,7 +46,7 @@ const isCorrect = async (input, output, func, source, question) => {
     const floatResult = parseFloat(result)
     output = parseFloat(output)
     console.log(floatResult, output);
-    if (Math.abs(floatResult - output) <= 0.003) {
+    if (Math.abs(floatResult - output) <= 0.1) {
       return true;
     } else {
       return result;
