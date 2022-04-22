@@ -26,7 +26,7 @@
 
 講習サイト：[https://rubylect.k1h.dev/lect1](https://rubylect.k1h.dev/lect1)
 
-チェッカー：[https://rubylect.k1h.dev/chcker](https://rubylect.k1h.dev/chcker)
+チェッカー：[https://rubylect.k1h.dev/checker](https://rubylect.k1h.dev/checker)
 
 ## 演習問題について
 
@@ -42,10 +42,10 @@ Rubyを既に習った方や上級者向けに D〜F問題もありまので挑�
 
 1. 左側に関数を入力
 2. 問題番号を選択
-3. Chckeを押す
+3. Checkerを押す
 4. **AC**と表示されればOK
 
-![bg 100% left](./slide/fig/chcker.png)
+![bg 100% left](./slide/fig/checker.png)
 ## 本日の講習の流れ
 
 ### 1. Rubyについて
@@ -308,10 +308,10 @@ puts(add(1,3))
 
 1. 左側に関数を貼り付け
 2. 問題番号0aを選択
-3. Chckeを押す
+3. Checkerを押す
 4. **AC**と表示されればOK
 
-![bg 100% left](./slide/fig/chcker.png)
+![bg 100% left](./slide/fig/checker.png)
 
 
 
