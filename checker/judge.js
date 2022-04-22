@@ -87,7 +87,7 @@ const run = async () => {
       outputField.value += `NC:${testCase.input} => ${result}\n`;
     }
   })
-  if (acceptedAll) {
+  if (acceptedAll && acceptedCount != 0) {
     outputField.value += `AC!! : ${acceptedCount}/${testCases.length}`;
   } else {
     outputField.value += `NC Try Again! : ${acceptedCount}/${testCases.length}`;
