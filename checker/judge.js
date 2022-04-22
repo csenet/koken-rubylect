@@ -39,9 +39,19 @@ const getTestCases = async (question) => {
   return testCases;
 };
 
-const isCorrect = async (input, output, func, source) => {
+const isCorrect = async (input, output, func, source, question) => {
   const result = window.vm.eval(source + "\n" + `${func}(${input})`).toString();
-  if (result === output) {
+  if (question == '1a') {
+    /* 小数点誤差を許容する */
+    const floatResult = parseFloat(input)
+    output = parseFloat(output)
+    if (floatResult - output <= 0.003) {
+      return true;
+    } else {
+      return result;
+    }
+  }
+  if (result.match(output)) {
     return true;
   } else {
     return result;
@@ -68,7 +78,7 @@ const run = async () => {
   let acceptedAll = true;
   let acceptedCount = 0;
   await testCases.forEach(async (testCase) => {
-    const result = await isCorrect(testCase.input, testCase.output, func, source);
+    const result = await isCorrect(testCase.input, testCase.output, func, source, question);
     if (result === true) {
       acceptedCount++;
       outputField.value += `OK:${testCase.input} => ${testCase.output}\n`;

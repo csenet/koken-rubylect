@@ -12,5 +12,5 @@ PI = 3.141592653589793
 10.times do |i|
   r = rand(0.0..5.0)
   h = rand(0.0..10.0)
-  print("#{r}, #{h} => #{PI * r * r * h / 3.0}\n")
+  printf("%f, %f => %.2f\n", r, h, PI * r * r * h / 3.0)
 end
