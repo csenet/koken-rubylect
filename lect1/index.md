@@ -46,7 +46,7 @@ Rubyを既に習った方や上級者向けに D〜F問題もありまので挑�
 3. Checkerを押す
 4. **AC**と表示されればOK
 
-![chcker](../slide/fig/checker.png)
+![chcker](./slide/fig/checker.png)
 ## 本日の講習の流れ
 
 ### 1. Rubyについて
@@ -312,7 +312,7 @@ puts(add(1,3))
 3. Checkerを押す
 4. **AC**と表示されればOK
 
-![bg 100% left](../slide/fig/checker.png)
+![bg 100% left](./slide/fig/checker.png)
 
 
 
