@@ -4,6 +4,7 @@ editor.getSession().setMode(new RubyMode());
 const {
   DefaultRubyVM
 } = window["ruby-wasm-wasi"];
+let isReady = false;
 
 editor.setValue("def add(a, b)\n  a + b\nend");
 
@@ -18,7 +19,7 @@ const main = async () => {
   } = await DefaultRubyVM(module);
   window.vm = vm;
   vm.printVersion();
-  document.getElementById('check-btn').disabled = false;
+  isReady = true;
 };
 
 const getTestCases = async (question) => {
@@ -68,6 +69,10 @@ const isCorrect = async (input, output, func, source, question) => {
 };
 
 const run = async () => {
+  if (!isReady) {
+    alert("WASMがロードされていません");
+    return;
+  }
   const source = editor.getValue();
   const question = document.getElementById('question').value;
   if (question === '選択してください') {
