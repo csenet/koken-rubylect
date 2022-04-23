@@ -18,6 +18,7 @@ const main = async () => {
   } = await DefaultRubyVM(module);
   window.vm = vm;
   vm.printVersion();
+  document.getElementById('check-btn').disabled = false;
 };
 
 const getTestCases = async (question) => {
