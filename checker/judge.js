@@ -49,7 +49,7 @@ const isCorrect = async (input, output, func, source, question) => {
   let result = "";
   try {
     result = window.vm.eval(source + "\n" + `${func}(${input})`).toString();
-  } catch (error) {
+  } catch (e) {
     return "Runtime Error";
   }
   if (question == '1a' || question == '1d') {
