@@ -45,7 +45,12 @@ function roundDecimal(value, n) {
 }
 
 const isCorrect = async (input, output, func, source, question) => {
-  const result = window.vm.eval(source + "\n" + `${func}(${input})`).toString();
+  let result = "";
+  try {
+    result = window.vm.eval(source + "\n" + `${func}(${input})`).toString();
+  } catch (error) {
+    return "Runtime Error";
+  }
   if (question == '1a' || question == '1d') {
     /* 小数点誤差を許容する */
     const floatResult = parseFloat(result)
@@ -55,7 +60,7 @@ const isCorrect = async (input, output, func, source, question) => {
       return result;
     }
   }
-  if (result.match(output)) {
+  if (result === output) {
     return true;
   } else {
     return result;
@@ -81,20 +86,20 @@ const run = async () => {
   outputField.value = "";
   let acceptedAll = true;
   let acceptedCount = 0;
-  await testCases.forEach(async (testCase) => {
+  for (const testCase of testCases) {
     const result = await isCorrect(testCase.input, testCase.output, func, source, question);
     if (result === true) {
       acceptedCount++;
-      outputField.value += `OK:${testCase.input} => ${testCase.output}\n`;
+      outputField.value = outputField.value + `OK:${testCase.input} => ${testCase.output}\n`;
     } else {
       acceptedAll = false;
-      outputField.value += `NC:${testCase.input} => ${result}\n`;
+      outputField.value = outputField.value + `NC:${testCase.input} => ${result}\n`;
     }
-  })
+  }
   if (acceptedAll && acceptedCount != 0) {
-    outputField.value += `AC!! : ${acceptedCount}/${testCases.length}`;
+    outputField.value = outputField.value + `AC!! : ${acceptedCount}/${testCases.length}\n`;
   } else {
-    outputField.value += `NC Try Again! : ${acceptedCount}/${testCases.length}`;
+    outputField.value = outputField.value + `NC Try Again! : ${acceptedCount}/${testCases.length}\n`;
   }
 }
 
