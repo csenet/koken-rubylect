@@ -20,6 +20,7 @@ const main = async () => {
   window.vm = vm;
   vm.printVersion();
   isReady = true;
+  document.getElementById('check-btn').disabled = false;
 };
 
 const getTestCases = async (question) => {
