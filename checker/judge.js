@@ -73,8 +73,8 @@ const isCorrect = async (input, output, func, source, question) => {
       }
     }
   } else if (question === '1c') {
-    const floatResultArray = result.replace(/[\[\]]/g, '').split(',').map(x => parseFloat(x));
-    const floatOutputArray = output.replace(/[\[\]]/g, '').split(',').map(x => parseFloat(x));
+    const floatResultArray = JSON.parse(result);
+    const floatOutputArray = JSON.parse(output);
     console.log(floatResultArray, floatOutputArray);
     let allCorrect = true;
     for (let i = 0; i < floatResultArray.length; i++) {
