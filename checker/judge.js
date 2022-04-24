@@ -47,25 +47,69 @@ function roundDecimal(value, n) {
 }
 
 const isCorrect = async (input, output, func, source, question) => {
-  let result = "";
+  let result;
   try {
     result = window.vm.eval(source + "\n" + `${func}(${input})`).toString();
   } catch (e) {
-    return "Runtime Error";
-  }
-  if (question == '1a' || question == '1d') {
-    /* 小数点誤差を許容する */
-    const floatResult = parseFloat(result)
-    if (roundDecimal(floatResult, 2) == output) {
-      return true;
-    } else {
-      return result;
+    return {
+      isSuccess: false,
+      status: "RE",
+      output: "Error",
     }
   }
-  if (result === output) {
-    return true;
+  /* Judge Modeに応じて切り替え */
+  if (question == '1a' || question == '1d') {
+    if (roundDecimal(parseFloat(result), 2) === parseFloat(output)) {
+      return {
+        isSuccess: true,
+        status: "AC",
+        output: result,
+      }
+    } else {
+      return {
+        isSuccess: true,
+        status: "WA",
+        output: result,
+      }
+    }
+  } else if (question === '1c') {
+    const floatResultArray = result.replace(/[\[\]]/g, '').split(',').map(x => parseFloat(x));
+    const floatOutputArray = output.replace(/[\[\]]/g, '').split(',').map(x => parseFloat(x));
+    console.log(floatResultArray, floatOutputArray);
+    let allCorrect = true;
+    for (let i = 0; i < floatResultArray.length; i++) {
+      if (roundDecimal(floatResultArray[i], 2) != roundDecimal(floatOutputArray[i], 2)) {
+        allCorrect = false;
+        break;
+      }
+    }
+    if (allCorrect) {
+      return {
+        isSuccess: true,
+        status: "AC",
+        output: result,
+      }
+    } else {
+      return {
+        isSuccess: true,
+        status: "WA",
+        output: result,
+      }
+    }
   } else {
-    return result;
+    if (result === output) {
+      return {
+        isSuccess: true,
+        status: "AC",
+        output: result,
+      }
+    } else {
+      return {
+        isSuccess: true,
+        status: "WA",
+        output: result,
+      }
+    }
   }
 };
 
@@ -94,12 +138,16 @@ const run = async () => {
   let acceptedCount = 0;
   for (const testCase of testCases) {
     const result = await isCorrect(testCase.input, testCase.output, func, source, question);
-    if (result === true) {
+    if (result.status === "AC") {
       acceptedCount++;
-      outputField.value = outputField.value + `OK:${testCase.input} => ${testCase.output}\n`;
+      outputField.value = outputField.value + `OK:${testCase.input} => ${result.output}\n`;
     } else {
       acceptedAll = false;
-      outputField.value = outputField.value + `NC:${testCase.input} => ${result}\n`;
+      if (result.status === "WA") {
+        outputField.value = outputField.value + `NC:${testCase.input} => ${result.output} expected ${testCase.output}\n`;
+      } else {
+        outputField.value = outputField.value + `RE:${testCase.input} => ${result.output}\n`;
+      }
     }
   }
   if (acceptedAll && acceptedCount != 0) {
