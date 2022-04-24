@@ -330,13 +330,15 @@ puts(add(1,3))
 Math::PIは変数と同じように使えます
 
 
-<details><summary>サンプルコード</summary>
+<details markdown=block><summary><b>サンプルコード(押して開く)</b></summary>
+
 
 ```ruby
 def vcorn(r, h)
   return Math::PI * r * r * h / 3.0
 end
 ```
+
 
 </details>
 
@@ -353,7 +355,7 @@ m,nは整数で結果は整数で返す
 
 return [a, b] のようにするとOK(これが何かは来週やります)
 
-<details><summary>サンプルコード</summary>
+<details markdown=block><summary><b>サンプルコード(押して開く)</b></summary>
 
 ```ruby
 def div(m, n)
@@ -386,7 +388,7 @@ a,b,cは整数だが出力は少数で行う
 ```
 
 
-<details><summary>解答</summary>
+<details markdown=block><summary><b>サンプルコード(押して開く)</b></summary>
 
 ```ruby
 def solve(a, b, c)
