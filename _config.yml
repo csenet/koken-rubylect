@@ -1,5 +1,5 @@
-title: Your awesome title
-email: your-email@example.com
+title: 工研Ruby講習2022
+email: admin@k1h.dev
 description: >-
   工研Ruby講習2022
 baseurl: ""
@@ -11,6 +11,6 @@ github_username:  csenet
 theme: jekyll-theme-cayman
 plugins:
   - jekyll-feed
-  
+
 excludes:
   - .idea/
