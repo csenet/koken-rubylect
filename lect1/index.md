@@ -350,7 +350,13 @@ return [a, b] のようにするとOK(これが何かは来週やります)
 ## 演習問題1c
 
 自然数a,b,cが与えられた時に
-$$ax^2+bx+c=0 (b^2-4ac\geq 0)$$
+
+$$
+\begin{align*}
+ax^2+bx+c=0 (b^2-4ac\geq 0)
+\end{align*}
+$$
+
 の解を出力する関数solve(a,b,c)を作成せよ
 
 ```
