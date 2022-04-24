@@ -1,4 +1,4 @@
-# 0a TestCase Generator
+# 1a TestCase Generator
 
 PI = 3.141592653589793
 
@@ -16,5 +16,5 @@ end
 20.times do |i|
   r = rand(0..5)
   h = rand(0..10)
-  printf("%d, %d => %.2f\n", r, h, Math::PI * r * r * h / 3.0)
+  printf("%d, %d => %.2f\n", r, h, vcorn(r, h))
 end

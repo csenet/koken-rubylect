@@ -1,4 +1,4 @@
-# 0a TestCase Generator
+# 1b TestCase Generator
 
 PI = 3.141592653589793
 
@@ -7,12 +7,6 @@ def div(m, n)
   rem = m % n
   return [sol, rem]
 end
-
-# # Manual Case
-# print("0,0 => 0")
-# print("100,100 => 200")
-# print("-100,-100 => -200")
-# print("-100,100 => 0")
 
 # Random Case
 10.times do |i|
