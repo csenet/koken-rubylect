@@ -1,1 +1,16 @@
+title: Your awesome title
+email: your-email@example.com
+description: >-
+  工研Ruby講習2022
+baseurl: ""
+url: "https://rubylect.k1h.dev"
+twitter_username: void_tech3
+github_username:  csenet
+
+# Build settings
 theme: jekyll-theme-cayman
+plugins:
+  - jekyll-feed
+  
+excludes:
+  - .idea/
