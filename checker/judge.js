@@ -52,7 +52,6 @@ const getTestCases = async (question) => {
   const firstRowEndPos = text.indexOf('\n', 0);
   let judgeMode = text.substring(0, firstRowEndPos);
   let outputString = text;
-  console.log(judgeMode);
   if (judgeMode === "Number" || judgeMode === "MultiNumber" || judgeMode === "String") {
     // JudgeModeが定義されている場合はいる場合は適応する
     outputString = text.substring(firstRowEndPos + 1);
@@ -85,7 +84,6 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
   /* コードに含まれる余計な部分を削除する */
   const FuncEndPos = source.indexOf('end', 0);
   const FuncSource = source.substring(0, FuncEndPos + 3);
-  console.log(FuncSource)
   try {
     result = window.vm.eval(FuncSource + "\n" + `${func}(${text})`).toString();
   } catch (e) {
@@ -172,27 +170,27 @@ const judge = async () => {
   }
   const func = temp[1];
   const outputField = document.getElementById('judge-output');
-  outputField.value = "";
+  outputField.innerHTML = "";
   let acceptedAll = true;
   let acceptedCount = 0;
   for (const testCase of testCases) {
     const result = await isCorrect(testCase.text, testCase.output, func, source, question, judgeMode);
     if (result.status === "AC") {
       acceptedCount++;
-      outputField.value = outputField.value + `AC:${testCase.text} => ${result.output}\n`;
+      outputField.innerHTML = outputField.innerHTML + `<span class="badge bg-success">AC</span> ${testCase.text} => ${result.output}<br>`;
     } else {
       acceptedAll = false;
       if (result.status === "WA") {
-        outputField.value = outputField.value + `NC:${testCase.text} => ${result.output}\n Expected: ${testCase.output}\n`;
+        outputField.innerHTML = outputField.innerHTML + `<span class="badge bg-warning">WA</span> ${testCase.text} => ${result.output}<br> Expected: ${testCase.output}<br>`;
       } else {
-        outputField.value = outputField.value + `RE:${testCase.text} => ${result.output}\n`;
+        outputField.innerHTML = outputField.innerHTML + `<span class="badge bg-warning">RE</span> ${testCase.text} => ${result.output}<br>`;
       }
     }
   }
   if (acceptedAll && acceptedCount != 0) {
-    outputField.value = outputField.value + `AC!! : ${acceptedCount}/${testCases.length}\n`;
+    outputField.innerHTML = outputField.innerHTML + `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length}<br>`;
   } else {
-    outputField.value = outputField.value + `NC Try Again! : ${acceptedCount}/${testCases.length}\n`;
+    outputField.innerHTML = outputField.innerHTML + `Result: <span class="badge bg-warning">WA</span> ${acceptedCount}/${testCases.length}<br>`;
   }
 }
 
