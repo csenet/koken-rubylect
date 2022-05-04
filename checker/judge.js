@@ -6,7 +6,7 @@ const {
 } = window["ruby-wasm-wasi"];
 let isReady = false;
 
-editor.setValue("def add(a, b)\n  a + b\nend");
+// editor.setValue("def add(a, b)\n  a + b\nend");
 
 const main = async () => {
   const response = await fetch(
