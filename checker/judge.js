@@ -188,9 +188,9 @@ const judge = async () => {
     }
   }
   if (acceptedAll && acceptedCount != 0) {
-    outputField.innerHTML = outputField.innerHTML + `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length}<br>`;
+    outputField.innerHTML = outputField.innerHTML + `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length}`;
   } else {
-    outputField.innerHTML = outputField.innerHTML + `Result: <span class="badge bg-warning">WA</span> ${acceptedCount}/${testCases.length}<br>`;
+    outputField.innerHTML = outputField.innerHTML + `Result: <span class="badge bg-warning">WA</span> ${acceptedCount}/${testCases.length}`;
   }
 }
 
