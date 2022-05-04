@@ -9,6 +9,12 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
   </script>
   <script src="https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@latest/dist/browser.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ruby-wasm-wasi@0.1.2/dist/index.umd.js"
+    integrity="sha256-cPmKu5S3jkz5j0NnceapOfiWkzhBQqiBovOLjeYXwA0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@wasmer/wasmfs@0.12.0/lib/index.iife.js"
+    integrity="sha256-sOd4ekxVsN4PXhR+cn/4uNAxeQOJRcsaW5qalYfvkTw=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@wasmer/wasi@0.12.0/lib/index.iife.js"
+    integrity="sha256-FslFp/Vq4bDf2GXu+9QyBEDLtEWO3fkMjpyOaJMHJT8=" crossorigin="anonymous"></script>
   <script src="/src/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="/src/mode-ruby.js" type="text/javascript" charset="utf-8"></script>
 </head>
@@ -25,19 +31,25 @@
       <option value="1c">1c</option>
       <option value="1d">1d</option>
     </select>
-    <div class="row">
+    <div class="row pt-1">
       <div class="col-6">
-        <label for="input">Input</label><br>
+        <label for="input">Code</label><br>
         <div id="editor"></div>
       </div>
       <div class="col-6">
-        <label for="output">Output</label><br>
-        <textarea id="output" class="form-control" name="output">
-  </textarea>
+        <div class="row">
+          <label for="output">Output</label><br>
+          <textarea id="output" class="form-control" name="code"></textarea>
+        </div>
+        <div class="row">
+          <label for="judge-output">Judge Result</label><br>
+          <textarea id="judge-output" class="form-control" name="judge-output"></textarea>
+        </div>
       </div>
     </div>
     <p class="py-2">
-      <button onclick="run()" class="btn btn-primary" id="check-btn" disabled>Check</button>
+      <button onclick="run()" class="btn btn-success" id="run-btn">Run</button>
+      <button onclick="judge()" class="btn btn-primary" id="check-btn" disabled>Check</button>
     </p>
   </div>
   <style>
@@ -46,9 +58,14 @@
       height: 500px;
     }
 
-    textarea {
-      width: auto;
-      height: 500px;
+    #output {
+      width: 100%;
+      height: 150px;
+    }
+
+    #judge-output {
+      width: 100%;
+      height: 330px;
     }
   </style>
   <script src="judge.js?time=2007" type="text/javascript"></script>

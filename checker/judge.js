@@ -1,9 +1,6 @@
 var editor = ace.edit("editor");
 var RubyMode = ace.require("ace/mode/ruby").Mode;
 editor.getSession().setMode(new RubyMode());
-const {
-  DefaultRubyVM
-} = window["ruby-wasm-wasi"];
 let isReady = false;
 
 // editor.setValue("def add(a, b)\n  a + b\nend");
@@ -14,11 +11,35 @@ const main = async () => {
   );
   const buffer = await response.arrayBuffer();
   const module = await WebAssembly.compile(buffer);
-  const {
-    vm
-  } = await DefaultRubyVM(module);
+  const WASI = window["WASI"].WASI;
+  const WasmFs = window["WasmFs"].WasmFs;
+  const RubyVM = window["ruby-wasm-wasi"].RubyVM;
+  const wasmFs = new WasmFs();
+  const originalWriteSync = wasmFs.fs.writeSync.bind(wasmFs.fs);
+  const textDecoder = new TextDecoder("utf-8");
+  wasmFs.fs.writeSync = (fd, buffer, offset, length, position) => {
+    const text = textDecoder.decode(buffer);
+    if (fd == 1 || fd == 2) {
+      console.log(text);
+    }
+    return originalWriteSync(fd, buffer, offset, length, position);
+  }
+  const vm = new RubyVM();
+  const wasi = new WASI({
+    bindings: {
+      ...WASI.defaultBindings,
+      fs: wasmFs.fs
+    },
+  });
+  const imports = {
+    wasi_snapshot_preview1: wasi.wasiImport
+  };
+  vm.addToImports(imports);
+  const wasmInstance = await WebAssembly.instantiate(module, imports);
+  await vm.setInstance(wasmInstance);
+  wasi.setMemory(wasmInstance.exports.memory);
+  vm.initialize();
   window.vm = vm;
-  vm.printVersion();
   isReady = true;
   document.getElementById('check-btn').disabled = false;
 };
@@ -27,29 +48,46 @@ const getTestCases = async (question) => {
   const response = await fetch(
     `./testcases/${question}`
   );
-  const text = await response.text();
+  const text = await response.text();;
+  const firstRowEndPos = text.indexOf('\n', 0);
+  let judgeMode = text.substring(0, firstRowEndPos);
+  let outputString = text;
+  console.log(judgeMode);
+  if (judgeMode === "Number" || judgeMode === "MultiNumber" || judgeMode === "String") {
+    // JudgeModeが定義されている場合はいる場合は適応する
+    outputString = text.substring(firstRowEndPos + 1);
+  } else {
+    judgeMode = null;
+  }
   const testCases = [];
-  text.split('\n').forEach((line) => {
+  outputString.split('\n').forEach((line) => {
     if (line.trim() === '') {
       return;
     }
-    const [input, output] = line.split('=>');
+    const [text, output] = line.split('=>');
     testCases.push({
-      input: input.trim(),
+      text: text.trim(),
       output: output.trim(),
     });
   });
-  return testCases;
+  return {
+    mode: judgeMode,
+    cases: testCases
+  };
 };
 
 function roundDecimal(value, n) {
   return Math.round(value * Math.pow(10, n)) / Math.pow(10, n);
 }
 
-const isCorrect = async (input, output, func, source, question) => {
+const isCorrect = async (text, output, func, source, question, judgeMode) => {
   let result;
+  /* コードに含まれる余計な部分を削除する */
+  const FuncEndPos = source.indexOf('end', 0);
+  const FuncSource = source.substring(0, FuncEndPos + 3);
+  console.log(FuncSource)
   try {
-    result = window.vm.eval(source + "\n" + `${func}(${input})`).toString();
+    result = window.vm.eval(FuncSource + "\n" + `${func}(${text})`).toString();
   } catch (e) {
     return {
       isSuccess: false,
@@ -58,7 +96,7 @@ const isCorrect = async (input, output, func, source, question) => {
     }
   }
   /* Judge Modeに応じて切り替え */
-  if (question == '1a' || question == '1d') {
+  if (judgeMode === 'Number') {
     if (roundDecimal(parseFloat(result), 2) === parseFloat(output)) {
       return {
         isSuccess: true,
@@ -72,10 +110,9 @@ const isCorrect = async (input, output, func, source, question) => {
         output: result,
       }
     }
-  } else if (question === '1c') {
+  } else if (judgeMode === 'MultiNumber') {
     const floatResultArray = JSON.parse(result);
     const floatOutputArray = JSON.parse(output);
-    console.log(floatResultArray, floatOutputArray);
     let allCorrect = true;
     for (let i = 0; i < floatResultArray.length; i++) {
       if (roundDecimal(floatResultArray[i], 2) != roundDecimal(floatOutputArray[i], 2)) {
@@ -113,7 +150,7 @@ const isCorrect = async (input, output, func, source, question) => {
   }
 };
 
-const run = async () => {
+const judge = async () => {
   if (!isReady) {
     alert("WASMがロードされていません");
     return;
@@ -124,7 +161,9 @@ const run = async () => {
     alert('問題を選択してください');
     return;
   }
-  const testCases = await getTestCases(question);
+  const testCaseInput = await getTestCases(question);
+  const testCases = testCaseInput.cases;
+  const judgeMode = testCaseInput.mode;
   const
     temp = source.match(/^[ \r\n\t]*def +([A-Za-z_0-9]+) *\(([^)]+)\)/);
   if (!temp) {
@@ -132,21 +171,21 @@ const run = async () => {
     return;
   }
   const func = temp[1];
-  const outputField = document.getElementById('output');
+  const outputField = document.getElementById('judge-output');
   outputField.value = "";
   let acceptedAll = true;
   let acceptedCount = 0;
   for (const testCase of testCases) {
-    const result = await isCorrect(testCase.input, testCase.output, func, source, question);
+    const result = await isCorrect(testCase.text, testCase.output, func, source, question, judgeMode);
     if (result.status === "AC") {
       acceptedCount++;
-      outputField.value = outputField.value + `OK:${testCase.input} => ${result.output}\n`;
+      outputField.value = outputField.value + `AC:${testCase.text} => ${result.output}\n`;
     } else {
       acceptedAll = false;
       if (result.status === "WA") {
-        outputField.value = outputField.value + `NC:${testCase.input} => ${result.output} expected ${testCase.output}\n`;
+        outputField.value = outputField.value + `NC:${testCase.text} => ${result.output}\n Expected: ${testCase.output}\n`;
       } else {
-        outputField.value = outputField.value + `RE:${testCase.input} => ${result.output}\n`;
+        outputField.value = outputField.value + `RE:${testCase.text} => ${result.output}\n`;
       }
     }
   }
@@ -156,5 +195,21 @@ const run = async () => {
     outputField.value = outputField.value + `NC Try Again! : ${acceptedCount}/${testCases.length}\n`;
   }
 }
+
+const run = async () => {
+  if (!isReady) {
+    alert("WASMがロードされていません");
+    return;
+  }
+  const source = editor.getValue();
+  let result = "";
+  try {
+    result = window.vm.eval(source).toString();
+  } catch (e) {
+    result = e;
+  }
+  const outputField = document.getElementById('output');
+  outputField.value = result;
+};
 
 main();
