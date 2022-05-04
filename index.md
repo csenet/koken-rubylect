@@ -14,4 +14,12 @@
 ### [第0回 環境構築](./lect0)
 ### [第1回 Rubyを使ってみる, 簡単な演算と関数](./lect1)
 
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
+
 

@@ -14,3 +14,5 @@ plugins:
 
 excludes:
   - .idea/
+
+highlighter: rouge
