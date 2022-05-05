@@ -114,7 +114,7 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
     const floatResultArray = JSON.parse(result);
     const floatOutputArray = JSON.parse(output);
     let allCorrect = true;
-    for (let i = 0; i < floatResultArray.length; i++) {
+    for (let i = 0; i < floatOutputArray.length; i++) {
       if (roundDecimal(floatResultArray[i], 2) != roundDecimal(floatOutputArray[i], 2)) {
         allCorrect = false;
         break;
