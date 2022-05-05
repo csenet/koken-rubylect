@@ -20,7 +20,9 @@ const main = async () => {
   wasmFs.fs.writeSync = (fd, buffer, offset, length, position) => {
     const text = textDecoder.decode(buffer);
     if (fd == 1 || fd == 2) {
-      console.log(text);
+      // 標準出力をテキストに表示
+      const outputField = document.getElementById('output');
+      outputField.value += text;
     }
     return originalWriteSync(fd, buffer, offset, length, position);
   }
@@ -48,7 +50,7 @@ const getTestCases = async (question) => {
   const response = await fetch(
     `./testcases/${question}`
   );
-  const text = await response.text();;
+  const text = await response.text();
   const firstRowEndPos = text.indexOf('\n', 0);
   let judgeMode = text.substring(0, firstRowEndPos);
   let outputString = text;
@@ -207,7 +209,7 @@ const run = async () => {
     result = e;
   }
   const outputField = document.getElementById('output');
-  outputField.value = result;
+  outputField.value = "";
 };
 
 main();
