@@ -201,15 +201,15 @@ const run = async () => {
     alert("WASMがロードされていません");
     return;
   }
+  const outputField = document.getElementById('output');
+  outputField.value = "";
   const source = editor.getValue();
   let result = "";
   try {
-    result = window.vm.eval(source).toString();
+    window.vm.eval(source);
   } catch (e) {
-    result = e;
+    outputField.value += e;
   }
-  const outputField = document.getElementById('output');
-  outputField.value = "";
 };
 
 main();
