@@ -7,7 +7,7 @@ let isReady = false;
 
 const main = async () => {
   const response = await fetch(
-    "https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@0.2.0-2022-04-05-a/dist/ruby.wasm"
+    "https://cdn.jsdelivr.net/npm/ruby-wasm-wasi@0.1.2/dist/ruby.wasm"
   );
   const buffer = await response.arrayBuffer();
   const module = await WebAssembly.compile(buffer);
@@ -41,6 +41,7 @@ const main = async () => {
   await vm.setInstance(wasmInstance);
   wasi.setMemory(wasmInstance.exports.memory);
   vm.initialize();
+
   window.vm = vm;
   isReady = true;
   document.getElementById('check-btn').disabled = false;
@@ -84,11 +85,13 @@ function roundDecimal(value, n) {
 const isCorrect = async (text, output, func, source, question, judgeMode) => {
   let result;
   /* コードに含まれる余計な部分を削除する */
-  const FuncEndPos = source.indexOf('end', 0);
+  const FuncEndPos = source.lastIndexOf('end');
   const FuncSource = source.substring(0, FuncEndPos + 3);
+  console.log(FuncSource + "\n" + `${func}(${text})`);
   try {
-    result = window.vm.eval(FuncSource + "\n" + `${func}(${text})`).toString();
+    result = window.vm.eval(FuncSource + "\n" + `${func} ${text}`).toString();
   } catch (e) {
+    console.log(e);
     return {
       isSuccess: false,
       status: "RE",
