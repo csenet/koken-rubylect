@@ -1,1 +1,20 @@
-dis = [0.0,0.8,1.9,3.1,4.6,6.8,9.2,11.4,14.4,18.2.21.7,24.8,27.0,28.8,31.8, 36.7, 40.9, 46.5,51.1,54.8,58.6, 63.8,67.8, 73.1,77.7,80.8,83.9]
+def getPrimes(max)
+  list = (2..max).to_a
+  prime_list = []
+  sqrt = Math.sqrt(max).floor
+
+  while val = list.shift
+    prime_list << val
+    if val > sqrt
+      break
+    end
+    list.delete_if{|num| num % val == 0}
+  end
+  return prime_list.concat(list)
+end
+
+# Random Case
+20.times do |i|
+  x = Random.rand(2..100)
+  printf("%d => %s\n", x, getPrimes(x))
+end
