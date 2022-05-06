@@ -1,1 +1,17 @@
-dis = [0.0,0.8,1.9,3.1,4.6,6.8,9.2,11.4,14.4,18.2.21.7,24.8,27.0,28.8,31.8, 36.7, 40.9, 46.5,51.1,54.8,58.6, 63.8,67.8, 73.1,77.7,80.8,83.9]
+def isPrime(n)
+  if n < 2
+    return false
+  end
+  for i in 2..Math.sqrt(n)
+    if n % i == 0
+      return false
+    end
+  end
+  return true
+end
+
+# Random Case
+20.times do |i|
+  x = rand(100).to_i
+  printf("%d => %s\n", x, isPrime(x))
+end
