@@ -1,7 +1,7 @@
 # 2c TestCase Generator
 
 def std(scores)
-  sum = 0
+  sum = 0.0
   n = scores.size
   for score in scores do
     sum += score
