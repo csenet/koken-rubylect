@@ -16,6 +16,6 @@ end
 
 # Random Case
 20.times do |i|
-  x = Random.rand(1..60)
+  x = Random.rand(90..1000)
   printf("%d => %d\n", x, minFee(60))
 end

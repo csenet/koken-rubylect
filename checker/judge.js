@@ -87,7 +87,7 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
   /* コードに含まれる余計な部分を削除する */
   const FuncEndPos = source.lastIndexOf('end');
   const FuncSource = source.substring(0, FuncEndPos + 3);
-  console.log(FuncSource + "\n" + `${func}(${text})`);
+  const startTime = Date.now(); // 開始時間
   try {
     result = window.vm.eval(FuncSource + "\n" + `${func} ${text}`).toString();
   } catch (e) {
@@ -96,8 +96,10 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
       isSuccess: false,
       status: "RE",
       output: "Error",
+      time: 0
     }
   }
+  const endTime = Date.now(); // 終了時間
   /* Judge Modeに応じて切り替え */
   if (judgeMode === 'Number') {
     if (roundDecimal(parseFloat(result), 2) === parseFloat(output)) {
@@ -105,12 +107,14 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
         isSuccess: true,
         status: "AC",
         output: result,
+        timeEpalsed: endTime-startTime,
       }
     } else {
       return {
         isSuccess: true,
         status: "WA",
         output: result,
+        timeEpalsed: endTime - startTime,
       }
     }
   } else if (judgeMode === 'MultiNumber') {
@@ -128,12 +132,14 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
         isSuccess: true,
         status: "AC",
         output: result,
+        timeEpalsed: endTime-startTime,
       }
     } else {
       return {
         isSuccess: true,
         status: "WA",
         output: result,
+        timeEpalsed: endTime-startTime,
       }
     }
   } else {
@@ -142,12 +148,14 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
         isSuccess: true,
         status: "AC",
         output: result,
+        timeEpalsed: endTime-startTime,
       }
     } else {
       return {
         isSuccess: true,
         status: "WA",
         output: result,
+        timeEpalsed: endTime-startTime,
       }
     }
   }
@@ -178,8 +186,10 @@ const judge = async () => {
   outputField.innerHTML = "";
   let acceptedAll = true;
   let acceptedCount = 0;
+  let allTime = 0;
   for (const testCase of testCases) {
     const result = await isCorrect(testCase.text, testCase.output, func, source, question, judgeMode);
+    allTime += result.timeEpalsed;
     if (result.status === "AC") {
       acceptedCount++;
       outputField.innerHTML = outputField.innerHTML + `<span class="badge bg-success">AC</span> ${testCase.text} => ${result.output}<br>`;
@@ -193,7 +203,15 @@ const judge = async () => {
     }
   }
   if (acceptedAll && acceptedCount != 0) {
+    if(question === '2f'){
+      if(allTime < 200){
+        outputField.innerHTML = outputField.innerHTML + `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length} ${allTime}ms`;
+      }else{
+        outputField.innerHTML = outputField.innerHTML + `Result: <span class="badge bg-warning">TLE</span> ${acceptedCount}/${testCases.length} ${allTime}ms`;
+      }
+    }else{
     outputField.innerHTML = outputField.innerHTML + `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length}`;
+    }
   } else {
     outputField.innerHTML = outputField.innerHTML + `Result: <span class="badge bg-warning">WA</span> ${acceptedCount}/${testCases.length}`;
   }

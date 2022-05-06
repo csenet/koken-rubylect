@@ -15,6 +15,6 @@ end
 
 # Random Case
 20.times do |i|
-  x = Random.rand(2..100)
+  x = Random.rand(1000..10000)
   printf("%d => %s\n", x, getPrimes(x))
 end

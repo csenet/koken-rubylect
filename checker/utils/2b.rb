@@ -11,7 +11,7 @@ def isPrime(n)
 end
 
 # Random Case
-20.times do |i|
-  x = rand(100).to_i
+500.times do |i|
+  x = rand(10000..90000).to_i
   printf("%d => %s\n", x, isPrime(x))
 end
