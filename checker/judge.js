@@ -205,15 +205,15 @@ const judge = async () => {
   if (acceptedAll && acceptedCount != 0) {
     if(question === '2f'){
       if(allTime < 200){
-        outputField.innerHTML = `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length} ${allTime}ms` + outputField.innerHTML;
+        outputField.innerHTML = `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length} ${allTime}ms<br>` + outputField.innerHTML;
       }else{
-        outputField.innerHTML =`Result: <span class="badge bg-warning">TLE</span> ${acceptedCount}/${testCases.length} ${allTime}ms` + outputField.innerHTML;
+        outputField.innerHTML =`Result: <span class="badge bg-warning">TLE</span> ${acceptedCount}/${testCases.length} ${allTime}ms<br>` + outputField.innerHTML;
       }
     }else{
-    outputField.innerHTML = `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length}` + outputField.innerHTML;
+    outputField.innerHTML = `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length}<br>` + outputField.innerHTML;
     }
   } else {
-    outputField.innerHTML = `Result: <span class="badge bg-warning">WA</span> ${acceptedCount}/${testCases.length}` + outputField.innerHTML;
+    outputField.innerHTML = `Result: <span class="badge bg-warning">WA</span> ${acceptedCount}/${testCases.length}<br>` + outputField.innerHTML;
   }
 }
 
