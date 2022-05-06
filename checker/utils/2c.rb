@@ -12,7 +12,7 @@ def std(scores)
   for score in scores
     sum_temp += (score - avg) ** 2
   end
-  return Math.sqrt(sum_temp / n)
+  return Math.sqrt(sum_temp / n).round(2)
 end
 
 def getTestCase
