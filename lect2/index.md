@@ -501,6 +501,17 @@ getFare(12.4) => 240
 
 ヒント: 規則性に注目するととてもシンプルにプログラムを書けます
 
+<details markdown=block><summary><b>サンプルコード(押して開く)</b></summary>
+
+```ruby
+def getFee(x)
+  data = [150,190,200,240,330,420,510,590]
+  return data[x/4]
+end
+```
+
+</details>
+
 ## 演習問題2b
 
 ある整数`n`が与えられた時、その数が素数かどうかを判定する関数`isPrimes(n)`を作成せよ。
@@ -519,6 +530,25 @@ nは0以上100以下の整数
 isPrime(5) => true
 isPrime(28) => false
 ```
+
+<details markdown=block><summary><b>サンプルコード(押して開く)</b></summary>
+
+```ruby
+def isPrime(n)
+  if n < 2
+    return false
+  end
+  for i in 2..(n-1)
+    if n % i == 0
+      return false
+    end
+  end
+  return true
+end
+```
+
+</details>
+
 
 ## 演習問題2c
 
@@ -545,6 +575,28 @@ $$
 stddevia([0, 100, 4, 86, 1, 34]) => 41.0954174249798
 ```
 
+<details markdown=block><summary><b>サンプルコード(押して開く)</b></summary>
+
+```ruby
+def std(scores)
+  sum = 0.0
+  n = scores.size
+  for score in scores do
+    sum += score
+  end
+  avg = sum / n
+  devia = 0.0
+  sum_temp = 0.0
+  for score in scores
+    sum_temp += (score - avg) ** 2
+  end
+  return Math.sqrt(sum_temp / n).round(2)
+end
+```
+
+</details>
+
+
 ### 以下上級者向け問題
 
 ## 演習問題2d
@@ -562,6 +614,27 @@ nは2以上100以下です。
 ```
 getPrimes(5) => [2, 3, 5]
 ```
+
+<details markdown=block><summary><b>サンプルコード(押して開く)</b></summary>
+
+```ruby
+def getPrimes(max)
+  list = (2..max).to_a
+  prime_list = []
+  sqrt = Math.sqrt(max).floor
+
+  while val = list.shift
+    prime_list << val
+    if val > sqrt
+      break
+    end
+    list.delete_if{|num| num % val == 0}
+  end
+  return prime_list.concat(list)
+end
+```
+
+</details>
 
 ## 演習問題2e
 
@@ -599,6 +672,28 @@ xは1以上60以下です
 minFee(60) => 1050
 ```
 
+<details markdown=block><summary><b>サンプルコード(押して開く)</b></summary>
+
+```ruby
+def minFee(x)
+  min = 99999
+  fees = [140,190,200,240,320,410,500,580,670,760,840,970,1140,1320,1490,1660]
+  for i in 0..x do
+    for j in 0..(x-i) do
+      a = fees[i/4]
+      b = fees[j/4]
+      c = fees[(x-i-j)/4]
+      a = 0 if i == 0
+      b = 0 if j == 0
+      min = [a+b+c,min].min
+    end
+  end
+  return min
+end
+```
+
+</details>
+
 ## 演習問題2f
 
 演習問題2bについて、`x`が与えられたときに素数か判定するプログラム`isPrime(x)`を作ります。
@@ -608,3 +703,21 @@ minFee(60) => 1050
 制約
 xは2以上90000以下です
 ```
+
+<details markdown=block><summary><b>サンプルコード(押して開く)</b></summary>
+
+```ruby
+def isPrime(n)
+  if n < 2
+    return false
+  end
+  for i in 2..Math.sqrt(n)
+    if n % i == 0
+      return false
+    end
+  end
+  return true
+end
+```
+
+</details>
