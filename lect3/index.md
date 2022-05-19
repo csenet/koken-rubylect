@@ -351,7 +351,7 @@ end
 
 このようにどちらも同じ処理をしますが、`each`文を使うとよりシンプルかもしれません。
 
-#### break, continueとは？
+#### break, nextとは？
 
 ```ruby
 count = 0
