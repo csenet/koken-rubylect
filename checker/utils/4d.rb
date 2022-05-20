@@ -9,7 +9,7 @@ def getArea(a, b, f)
     sum += (rev + y) * h / 2.0
     rev = y
   end
-  return sum
+  return sum.round(2)
 end
 
-puts getArea(0.0, 1.0, "Math.sqrt(x**2+1)")
+puts getArea(0, 1, "Math.sqrt(x**2+1)")

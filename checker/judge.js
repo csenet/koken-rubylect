@@ -101,8 +101,10 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
   }
   const endTime = Date.now(); // 終了時間
   /* Judge Modeに応じて切り替え */
-  if (judgeMode === 'Number') {
-    if (roundDecimal(parseFloat(result), 2) === parseFloat(output)) {
+  if (judgeMode === "Number") {
+    if (roundDecimal(parseFloat(result), 2) === roundDecimal(parseFloat(output), 2)) {
+      console.log(judgeMode)
+      console.log(roundDecimal(parseFloat(result), 2))
       return {
         isSuccess: true,
         status: "AC",
@@ -203,7 +205,7 @@ const judge = async () => {
     }
   }
   if (acceptedAll && acceptedCount != 0) {
-    if (question === '2f') {
+    if (question === '2f' || question === '4e') {
       if (allTime < 500) {
         outputField.innerHTML = `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length} ${allTime}ms<br>` + outputField.innerHTML;
       } else {
