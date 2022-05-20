@@ -89,7 +89,7 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
   const FuncSource = source.substring(0, FuncEndPos + 3);
   const startTime = Date.now(); // 開始時間
   try {
-    result = window.vm.eval(FuncSource + "\n" + `${func} ${text}`).toString();
+    result = window.vm.eval("# encoding: utf-8\n" + FuncSource + "\n" + `${func} ${text}`).toString();
   } catch (e) {
     console.log(e);
     return {
@@ -107,7 +107,7 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
         isSuccess: true,
         status: "AC",
         output: result,
-        timeEpalsed: endTime-startTime,
+        timeEpalsed: endTime - startTime,
       }
     } else {
       return {
@@ -132,14 +132,14 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
         isSuccess: true,
         status: "AC",
         output: result,
-        timeEpalsed: endTime-startTime,
+        timeEpalsed: endTime - startTime,
       }
     } else {
       return {
         isSuccess: true,
         status: "WA",
         output: result,
-        timeEpalsed: endTime-startTime,
+        timeEpalsed: endTime - startTime,
       }
     }
   } else {
@@ -148,14 +148,14 @@ const isCorrect = async (text, output, func, source, question, judgeMode) => {
         isSuccess: true,
         status: "AC",
         output: result,
-        timeEpalsed: endTime-startTime,
+        timeEpalsed: endTime - startTime,
       }
     } else {
       return {
         isSuccess: true,
         status: "WA",
         output: result,
-        timeEpalsed: endTime-startTime,
+        timeEpalsed: endTime - startTime,
       }
     }
   }
@@ -203,17 +203,17 @@ const judge = async () => {
     }
   }
   if (acceptedAll && acceptedCount != 0) {
-    if(question === '2f'){
-      if(allTime < 500){
+    if (question === '2f') {
+      if (allTime < 500) {
         outputField.innerHTML = `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length} ${allTime}ms<br>` + outputField.innerHTML;
-      }else{
-        outputField.innerHTML =`Result: <span class="badge bg-warning">TLE</span> ${acceptedCount}/${testCases.length} ${allTime}ms<br>` + outputField.innerHTML;
+      } else {
+        outputField.innerHTML = `Result: <span class="badge bg-warning">TLE</span> ${acceptedCount}/${testCases.length} ${allTime}ms<br>` + outputField.innerHTML;
       }
-    }else{
-    outputField.innerHTML = `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length}<br>` + outputField.innerHTML;
+    } else {
+      outputField.innerHTML = `Result: <span class="badge bg-success">AC</span> ${acceptedCount}/${testCases.length} ${allTime}ms<br>` + outputField.innerHTML;
     }
   } else {
-    outputField.innerHTML = `Result: <span class="badge bg-warning">WA</span> ${acceptedCount}/${testCases.length}<br>` + outputField.innerHTML;
+    outputField.innerHTML = `Result: <span class="badge bg-warning">WA</span> ${acceptedCount}/${testCases.length} ${allTime}ms<br>` + outputField.innerHTML;
   }
 }
 
@@ -227,7 +227,7 @@ const run = async () => {
   const source = editor.getValue();
   let result = "";
   try {
-    window.vm.eval(source);
+    window.vm.eval("# encoding: utf-8\n" + source);
   } catch (e) {
     outputField.value += e;
   }
