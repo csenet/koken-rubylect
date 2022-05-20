@@ -1,6 +1,6 @@
 def isTouched(a, b, c, x, y, r)
   d = (a * x + b * y + c).abs / Math.sqrt(a ** 2 + b ** 2)
-  return true if (d - r).abs < 1.0
+  return true if (d - r) < 1.0
   return false
 end
 
